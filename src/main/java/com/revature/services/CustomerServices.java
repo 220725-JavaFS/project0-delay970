@@ -65,7 +65,10 @@ public class CustomerServices {
 		}
 			
 		case 3:{
-			makeWithdrawl();
+			System.out.println("Which acount would you like to withdraw money from?");
+			int choice = selectAccount();
+			Account account = accounts.get(choice);
+			makeWithdrawl(account);
 			break;
 		}
 		case 4:{
@@ -103,10 +106,8 @@ public class CustomerServices {
 		return;
 	}
 	
-	public void makeWithdrawl() {
-		System.out.println("Which acount would you like to withdraw money from?");
-		int choice = selectAccount();
-		Account account = accounts.get(choice);
+	public void makeWithdrawl(Account account) {
+		
 		if(account.getBalance() == 0) {
 			System.out.println("There is no money in this acount to withdraw.");
 			return;
@@ -117,7 +118,7 @@ public class CustomerServices {
 			double amount = DWController.getAmount();
 			newBalance = account.getBalance() - amount;
 			if(newBalance<0) {
-				System.out.println("Amount must be less than available account balance.");
+				System.out.println("Amount can not be greater than available account balance.");
 			}
 		}while(newBalance<0);
 		account.setBalance(newBalance);

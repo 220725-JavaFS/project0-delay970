@@ -1,7 +1,6 @@
 package com.revature;
 
 import com.revature.controllers.WelcomeController;
-import com.revature.files.OutFile;
 import com.revature.controllers.SelectOptionController;
 import com.revature.models.User;
 import com.revature.repos.AccountRepo;

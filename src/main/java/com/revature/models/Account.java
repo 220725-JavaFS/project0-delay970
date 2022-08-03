@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Account {
 	private String username;
+	private int accountNum;
 	private int accountType;
 	private double balance;
 	
