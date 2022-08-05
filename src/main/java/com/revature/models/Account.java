@@ -3,50 +3,26 @@ package com.revature.models;
 import java.util.Objects;
 
 public class Account {
-	private String username;
 	private int accountNum;
 	private int accountType;
 	private double balance;
+	private double minBalance;
+	private boolean approved = false;
 	
 	public Account() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
-	public Account(String username, int accountType) {
+
+	public Account(int accountNum, int accountType, double minBalance, boolean approved) {
 		super();
-		this.username = username;
+		this.accountNum = accountNum;
 		this.accountType = accountType;
-		this.balance = 0;
-	}
-	
-	public Account(String username, int accountType, double balance) {
-		super();
-		this.username = username;
-		this.accountType = accountType;
-		this.balance = balance;
-	}
-	
-	@Override
-	public String toString() {
-		return "Account [username=" + username + ", accountType=" + accountType + ", balance="
-				+ balance + "]";
+		this.minBalance = minBalance;
+		this.approved = approved;
 	}
 
-	public String getUsername() {
-		return username;
-	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public int getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(int accountType) {
-		this.accountType = accountType;
-	}
 
 	public double getBalance() {
 		return balance;
@@ -56,9 +32,33 @@ public class Account {
 		this.balance = balance;
 	}
 
+	public double getMinBalance() {
+		return minBalance;
+	}
+
+	public void setMinBalance(double minBalance) {
+		this.minBalance = minBalance;
+	}
+
+	public boolean isApproved() {
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
+
+	public int getAccountNum() {
+		return accountNum;
+	}
+
+	public int getAccountType() {
+		return accountType;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(accountType, username);
+		return Objects.hash(accountNum, accountType);
 	}
 
 	@Override
@@ -70,8 +70,10 @@ public class Account {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
-		return accountType == other.accountType && Objects.equals(username, other.username);
+		return accountNum == other.accountNum && accountType == other.accountType;
 	}
+	
+	
 	
 	
 }

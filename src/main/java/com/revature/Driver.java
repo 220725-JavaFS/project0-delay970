@@ -1,10 +1,10 @@
 package com.revature;
 
 import com.revature.controllers.WelcomeController;
+import com.revature.daos.UserDAOImpl;
+import com.revature.data.CreateFakeUserData;
 import com.revature.controllers.SelectOptionController;
 import com.revature.models.User;
-import com.revature.repos.AccountRepo;
-import com.revature.repos.UserRepo;
 import com.revature.services.UserOptions;
 
 public class Driver {
@@ -12,17 +12,18 @@ public class Driver {
 	public static void main(String[] args) {
 		System.out.println("Welcome to Fox banking.");
 		
-		char n = 'a';
+		UserDAOImpl dbo = new UserDAOImpl();
 		
-		for(int i =0; i<10; i++) {
-			String name = "" + n++;
-			name.trim();
-			User A = new User(name, name, 0);
-			UserRepo.storeUser(A);
-		}
+		//CreateFakeUserData.generateUsers(20, 1);
+		//CreateFakeUserData.generateUsers(20, 2);
+		//CreateFakeUserData.generateUsers(20, 3);
 		
 		//User activeUser = WelcomeController.welcome();
-		User activeUser = UserRepo.users.get(0);
+		
+		User testCustomer = dbo.getUserByAccount_id(51);
+		User testEmployee = dbo.getUserByAccount_id(71);
+		User testAdmin = dbo.getUserByAccount_id(91);
+		User activeUser = testCustomer;
 		
 		UserOptions options = new UserOptions(activeUser);
 		options.displayUserOptions();

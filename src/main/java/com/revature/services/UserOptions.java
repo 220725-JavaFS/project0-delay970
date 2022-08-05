@@ -23,15 +23,15 @@ public class UserOptions {
 		
 		
 		switch(user.getPermissions()) {
-		case 0:
+		case 1:
 			
 			CustomerServices services = new CustomerServices(user);
 			services.customerOptions();
 			return;
-		case 1:
+		case 2:
 			
 			return;
-		case 2:
+		case 3:
 			
 			return;
 			
