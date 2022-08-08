@@ -5,6 +5,8 @@ import com.revature.models.User;
 public class CreateFakeUserData {
 	
 	public static void generateUsers(int num, int privlage) {
+		
+		UserDAOImpl dao = new UserDAOImpl();
 		for(int i = 0; i< num; i++) {
 			
 			String username = "";
@@ -14,7 +16,6 @@ public class CreateFakeUserData {
 			}
 			
 			User user = new User(username, "password", privlage, null);
-			UserDAOImpl dao = new UserDAOImpl();
 			dao.storeUser(user);
 		}
 	}

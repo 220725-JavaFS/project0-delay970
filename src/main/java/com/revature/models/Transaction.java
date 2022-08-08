@@ -2,17 +2,53 @@ package com.revature.models;
 
 import java.util.Objects;
 
+import com.revature.daos.AccountDAO;
+import com.revature.daos.AccountDAOImpl;
+
 public class Transaction {
 	private int id;
-	private int toAcount;
 	private int fromAcount;
-	private int amount;
+	private int fromAcountType;
+	private double amount;
+	private int toAcount;
+	private int toAcountType;
 	
-	public Transaction(int toAcount, int fromAcount, int amount) {
+	public Transaction(int fromAcount, int fromAcountType, double amount, int toAcount, int toAcountType) {
 		super();
-		this.toAcount = toAcount;
 		this.fromAcount = fromAcount;
+		this.fromAcountType = fromAcountType;
 		this.amount = amount;
+		this.toAcount = toAcount;
+		this.toAcountType = toAcountType;
+	}
+
+	public boolean storeTransaction() {
+		AccountDAO dao = new AccountDAOImpl();
+		return dao.storeTransaction(this);
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getFromAcountType() {
+		return fromAcountType;
+	}
+
+	public void setFromAcountType(int fromAcountType) {
+		this.fromAcountType = fromAcountType;
+	}
+
+	public int getToAcountType() {
+		return toAcountType;
+	}
+
+	public void setToAcountType(int toAcountType) {
+		this.toAcountType = toAcountType;
 	}
 
 	public int getToAcount() {
@@ -31,11 +67,11 @@ public class Transaction {
 		this.fromAcount = fromAcount;
 	}
 
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
@@ -55,6 +91,5 @@ public class Transaction {
 		Transaction other = (Transaction) obj;
 		return id == other.id;
 	}
-	
-	
+
 }

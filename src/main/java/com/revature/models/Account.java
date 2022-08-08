@@ -2,13 +2,16 @@ package com.revature.models;
 
 import java.util.Objects;
 
+import com.revature.daos.AccountDAO;
+import com.revature.daos.AccountDAOImpl;
+
 public class Account {
 	private int accountNum;
 	private int accountType;
 	private double balance;
 	private double minBalance;
 	private boolean approved = false;
-	
+
 	public Account() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -21,8 +24,11 @@ public class Account {
 		this.minBalance = minBalance;
 		this.approved = approved;
 	}
-
-
+	
+	public boolean storeAccount() {
+		AccountDAO dao = new AccountDAOImpl();
+		return dao.storeAccount(this);
+	}
 
 	public double getBalance() {
 		return balance;
@@ -72,8 +78,5 @@ public class Account {
 		Account other = (Account) obj;
 		return accountNum == other.accountNum && accountType == other.accountType;
 	}
-	
-	
-	
-	
+
 }

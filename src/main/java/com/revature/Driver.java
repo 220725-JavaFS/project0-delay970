@@ -9,30 +9,20 @@ import com.revature.services.UserOptions;
 
 public class Driver {
 	User user;
+
 	public static void main(String[] args) {
 		System.out.println("Welcome to Fox banking.");
-		
+
 		UserDAOImpl dbo = new UserDAOImpl();
-		
-		//CreateFakeUserData.generateUsers(20, 1);
-		//CreateFakeUserData.generateUsers(20, 2);
-		//CreateFakeUserData.generateUsers(20, 3);
-		
-		//User activeUser = WelcomeController.welcome();
-		
-		User testCustomer = dbo.getUserByAccount_id(51);
-		User testEmployee = dbo.getUserByAccount_id(71);
-		User testAdmin = dbo.getUserByAccount_id(91);
-		User activeUser = testCustomer;
-		
+
+		// CreateFakeUserData.generateUsers(20, 1);
+		// CreateFakeUserData.generateUsers(20, 2);
+		// CreateFakeUserData.generateUsers(20, 3);
+
+		User activeUser = WelcomeController.welcome();
+
 		UserOptions options = new UserOptions(activeUser);
 		options.displayUserOptions();
-		
-//		OutFile out = new OutFile();
-//		
-////		out.toFile("Customer.txt", UserRepo.users);
-////		
-////		out.toFile("Accounts.txt", AccountRepo.accounts);
 	}
 
 }
