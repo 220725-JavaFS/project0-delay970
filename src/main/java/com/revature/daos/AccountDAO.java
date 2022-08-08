@@ -15,4 +15,7 @@ public interface AccountDAO {
 	
 	public double getAccountBalance(int account, int account_type);
 	
+	public boolean deleteAccount(Account account);
+	
+	public ArrayList<Transaction> getTransactions(int account_id);
 }

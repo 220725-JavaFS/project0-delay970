@@ -141,4 +141,41 @@ public class AccountDAOImpl implements AccountDAO {
 			return -1;
 		}
 	}
+
+	public boolean deleteAccount(Account account) {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "delete from accounts where account_id = ? and account_type = ?;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, account.getAccountNum());
+			statement.setInt(2, account.getAccountType());
+			statement.execute();
+			return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public ArrayList<Transaction> getTransactions(int account_id) {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * from transactions where to_account = ? or from_account = ?;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, account_id);
+			statement.setInt(2, account_id);
+			ResultSet result = statement.executeQuery();
+
+			ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+
+			while (result.next()) {
+				Transaction transaction = new Transaction(result.getInt("from_account"),result.getInt("from_account_type"), result.getDouble("amount"), result.getInt("to_account"), result.getInt("to_account_type"));
+				transactions.add(transaction);
+			}
+			return transactions;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

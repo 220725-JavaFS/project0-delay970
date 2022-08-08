@@ -15,11 +15,9 @@ public class WelcomeController {
 		
 		System.out.println("Please select an option:");
 		System.out.println("1. Register");
-		System.out.println("2. Log In");
+		System.out.println("2. Login");
 
-		//int option = SelectOptionController.selectOption(2);
-
-		int option =2;
+		int option = SelectOptionController.selectOption(2);
 		
 		switch (option) {
 		case 1:
@@ -36,16 +34,12 @@ public class WelcomeController {
 		while (true) {
 			System.out.println("Login");
 			System.out.print("Username: ");
-			//String username = scan.nextLine().trim();
-			
-			String username = "delay97";
+			String username = scan.nextLine().trim();
 			
 			user = dao.getUserByUsername(username);
 			
 			System.out.print("Password: ");
-			//String password = scan.nextLine().trim();
-
-			String password = "pass";
+			String password = scan.nextLine().trim();
 			
 			if (user == null || !user.getPassword().equals(password)) {
 				

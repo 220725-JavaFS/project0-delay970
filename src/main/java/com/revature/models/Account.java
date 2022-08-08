@@ -11,7 +11,7 @@ public class Account {
 	private double balance;
 	private double minBalance;
 	private boolean approved = false;
-
+	
 	public Account() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -24,10 +24,15 @@ public class Account {
 		this.minBalance = minBalance;
 		this.approved = approved;
 	}
-	
+
 	public boolean storeAccount() {
 		AccountDAO dao = new AccountDAOImpl();
 		return dao.storeAccount(this);
+	}
+
+	public boolean deleteAccount() {
+		AccountDAO dao = new AccountDAOImpl();
+		return dao.deleteAccount(this);
 	}
 
 	public double getBalance() {

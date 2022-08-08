@@ -19,7 +19,12 @@ public class Driver {
 		// CreateFakeUserData.generateUsers(20, 2);
 		// CreateFakeUserData.generateUsers(20, 3);
 
-		User activeUser = WelcomeController.welcome();
+		//User activeUser = WelcomeController.welcome();
+
+		User testCustomer = dbo.getUserByAccount_id(174);
+		User testEmployee = dbo.getUserByAccount_id(134);
+		User testAdmin = dbo.getUserByAccount_id(91);
+		User activeUser = testEmployee;
 
 		UserOptions options = new UserOptions(activeUser);
 		options.displayUserOptions();

@@ -23,11 +23,12 @@ public class UserOptions {
 		switch (user.getPermissions()) {
 		case 1:
 			
-			CustomerServices services = new CustomerServices(user);
-			services.customerOptions();
+			CustomerServices cservices = new CustomerServices(user);
+			cservices.customerOptions();
 			return;
 		case 2:
-
+			EmployeeServices eservices = new EmployeeServices(user);
+			eservices.employeeOptions();
 			return;
 		case 3:
 

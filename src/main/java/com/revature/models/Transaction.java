@@ -27,6 +27,12 @@ public class Transaction {
 		return dao.storeTransaction(this);
 	}
 	
+	@Override
+	public String toString() {
+		return "Transaction [fromAcount=" + fromAcount + ", fromAcountType=" + fromAcountType + ", amount=" + amount
+				+ ", toAcount=" + toAcount + ", toAcountType=" + toAcountType + "]";
+	}
+
 	public int getId() {
 		return id;
 	}

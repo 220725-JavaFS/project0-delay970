@@ -16,6 +16,8 @@ public class CustomerServices {
 	private User user;
 	private ArrayList<Account> accounts;
 	private ArrayList<String> accountTypes;
+	private ArrayList<String> loanTypes;
+	private int numAccounts = 4;
 	static AccountDAO dao = new AccountDAOImpl();
 
 	public CustomerServices(User user) {
@@ -23,11 +25,17 @@ public class CustomerServices {
 		this.user = user;
 		accounts = user.getAccounts();
 		accountTypes = dao.getAccountTypes();
+		loanTypes = new ArrayList<String>();
+		for (int i = accountTypes.size(); i > numAccounts; i--) {
+			loanTypes.add(accountTypes.get(i - 1));
+			accountTypes.remove(i - 1);
+		}
 	}
 
 	private int selectAccount() {
 		for (int i = 0; i < accounts.size(); i++) {
 			System.out.println((i + 1) + ". " + accountTypes.get(accounts.get(i).getAccountType() - 1));
+
 		}
 
 		return SelectOptionController.selectOption(accounts.size()) - 1;
@@ -70,15 +78,16 @@ public class CustomerServices {
 				break;
 			}
 			case 5: {
+				openAccount();
 				break;
 			}
 
 			case 6: {
-
+				loanApply();
 				break;
 			}
 			case 7: {
-
+				closeAccount();
 				break;
 			}
 			case 8: {
@@ -123,6 +132,11 @@ public class CustomerServices {
 		int choice = selectAccount();
 		Account account = accounts.get(choice);
 
+		if (account.getAccountType() == 4) {
+			System.out.println("You can't withdraw money from a CD until it has matured.");
+			return;
+		}
+
 		if (account.getMinBalance() == account.getBalance()) {
 			System.out.println("There is no money in this account to withdraw.");
 			return;
@@ -157,6 +171,11 @@ public class CustomerServices {
 		System.out.println("Which account would you like to transfer money from?");
 		int choice = selectAccount();
 		Account account = accounts.get(choice);
+
+		if (account.getAccountType() == 4) {
+			System.out.println("You can't transfer money from a CD until it has matured.");
+			return;
+		}
 
 		if (account.getMinBalance() == account.getBalance()) {
 			System.out.println("There is no money in this account to transfer.");
@@ -198,6 +217,11 @@ public class CustomerServices {
 			account2 = null;
 		}
 
+		if (account.equals(account2)) {
+			System.out.println("You can't transfer money to the same account that you are transfering money from.");
+			return;
+		}
+
 		double amount;
 		double newBalance;
 		System.out.println("How much money would you like transfer?");
@@ -227,10 +251,129 @@ public class CustomerServices {
 		}
 
 		account.setBalance(account.getBalance() - amount);
-		if(account2!=null) {
+		if (account2 != null) {
 			account2.setBalance(account2.getBalance() + amount);
 		}
 		return;
+	}
+
+	public void openAccount() {
+
+		ArrayList<Integer> avalibleAccounts = new ArrayList<Integer>();
+
+		outer: for (int i = 0; i < accountTypes.size(); i++) {
+			for (Account account : accounts) {
+				if (account.getAccountType() == i + 1) {
+					continue outer;
+				}
+			}
+			avalibleAccounts.add(i);
+		}
+
+		System.out.println("Which type of account would you like to open?");
+		for (int i = 0; i < avalibleAccounts.size(); i++) {
+			System.out.println((i + 1) + ". " + accountTypes.get(avalibleAccounts.get(i)));
+		}
+
+		int accountType = avalibleAccounts.get(SelectOptionController.selectOption(avalibleAccounts.size()) - 1) + 1;
+
+		double minBalance = 0;
+
+		switch (accountType) {
+		case 3:
+			System.out.println("The minimum balance for a " + accountTypes.get(accountType - 1) + " is $5000.");
+			minBalance = 5000;
+			break;
+		case 4:
+			System.out.println("The minimum balance for a " + accountTypes.get(accountType - 1) + " is $10000.");
+			minBalance = 10000;
+			break;
+		}
+
+		Account newAccount = new Account(accounts.get(0).getAccountNum(), accountType, minBalance, true);
+
+		if (!newAccount.storeAccount()) {
+			System.out.println("Something went wrong.");
+			System.out.println("Try again later.");
+			return;
+		}
+
+		System.out.println();
+		double amount;
+		do {
+			System.out.println("Enter you initial deposit:");
+			amount = DWController.getAmount();
+			if (amount < newAccount.getMinBalance()) {
+				System.out.println(
+						"Your initial deposit must be larger than the minimum required balance of you account.");
+			}
+		} while (amount < newAccount.getMinBalance());
+
+		Transaction transaction = new Transaction(-1, -1, amount, newAccount.getAccountNum(),
+				newAccount.getAccountType());
+
+		if (!transaction.storeTransaction()) {
+			System.out.println("Something went wrong.");
+			System.out.println("Try again later.");
+			return;
+		}
+
+		newAccount.setBalance(amount);
+		accounts.add(newAccount);
+	}
+
+	public void loanApply() {
+		System.out.println();
+	}
+	
+	public void closeAccount() {
+		if (accounts.size() == 1) {
+			System.out.println("You can't close your last account.");
+			return;
+		}
+
+		System.out.println("Which account would you like to close?");
+		int choice = selectAccount();
+		Account account = accounts.get(choice);
+
+		if (account.getAccountType() == 4) {
+			System.out.println("You can't close a " + accountTypes.get(3) + " until it has matured.");
+			return;
+		}
+
+		if (account.getBalance() > 0) {
+
+			Account account2;
+
+			do {
+				System.out.println();
+				System.out.println("Choose a differnt account to transfer your remaining balance into.");
+
+				choice = selectAccount();
+				account2 = accounts.get(choice);
+
+				if (account.equals(account2)) {
+					System.out.println("You can't transfer money into the same account that you are closeing.");
+				}
+			} while (account.equals(account2));
+
+			Transaction transaction = new Transaction(account.getAccountNum(), account.getAccountType(),
+					account.getBalance(), account2.getAccountNum(), account2.getAccountType());
+
+			if (!transaction.storeTransaction()) {
+				System.out.println("Something went wrong.");
+				System.out.println("Try again later.");
+				return;
+			}
+		}
+
+		if (!account.deleteAccount()) {
+			System.out.println("Something went wrong.");
+			System.out.println("Try again later.");
+			return;
+		}
+
+		accounts.remove(account);
 	}
 
 }
