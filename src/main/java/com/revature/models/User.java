@@ -71,7 +71,6 @@ public class User {
 		for(int i =0; i< password.length(); i++) {
 			temp += (char)(password.charAt(i) + 1);
 		}
-		System.out.println(temp);
 		password = temp;
 	}
 	
