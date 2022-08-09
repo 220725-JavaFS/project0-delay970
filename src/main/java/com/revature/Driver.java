@@ -28,16 +28,20 @@ public class Driver {
 		UserOptions options = new UserOptions(activeUser);
 		options.displayUserOptions();
 		
-		
+		System.out.println();
 		activeUser = WelcomeController.welcome();
 		options = new UserOptions(activeUser);
 		options.displayUserOptions();
 		
+		
+		System.out.println();
 		System.out.println("Demo Employee:");
 		activeUser = testEmployee;
 		options = new UserOptions(activeUser);
 		options.displayUserOptions();
 		
+		
+		System.out.println();
 		System.out.println("Demo Admin");
 		activeUser = testAdmin;
 		options = new UserOptions(activeUser);
