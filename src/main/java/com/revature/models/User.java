@@ -25,6 +25,7 @@ public class User {
 	
 	public boolean storeUser() {
 		UserDAOImpl dao = new UserDAOImpl();
+		encryptPassword();
 		return dao.storeUser(this);
 	}
 	
@@ -65,4 +66,22 @@ public class User {
 		return "User [username=" + username + ", password=" + password + ", permissions=" + permissions + "]";
 	}
 
+	private void encryptPassword() {
+		String temp = "";
+		for(int i =0; i< password.length(); i++) {
+			temp += (char)(password.charAt(i) + 1);
+		}
+		System.out.println(temp);
+		password = temp;
+	}
+	
+	public void decryptPassword() {
+		String temp = "";
+		for(int i =0; i< password.length(); i++) {
+			temp += (char)(password.charAt(i) - 1);
+		}
+		password = temp;
+	}
+	
+	
 }

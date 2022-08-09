@@ -41,6 +41,7 @@ public class UserDAOImpl implements UserDAO {
 			if (result.next()) {
 				User user = new User(result.getString("user_id"), result.getString("pass"),
 						result.getInt("user_permissions"), dao.getAccountsByAccount_id(result.getInt("account_id")));
+				user.decryptPassword();
 				return user;
 			}
 
@@ -63,6 +64,7 @@ public class UserDAOImpl implements UserDAO {
 			if (result.next()) {
 				User user = new User(result.getString("user_id"), result.getString("pass"),
 						result.getInt("user_permissions"), dao.getAccountsByAccount_id(result.getInt("account_id")));
+				user.decryptPassword();
 				return user;
 			}
 
