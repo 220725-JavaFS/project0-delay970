@@ -3,6 +3,7 @@ package com.revature.services;
 import java.util.ArrayList;
 
 import com.revature.controllers.DWController;
+import com.revature.controllers.NewUserAdvancedController;
 import com.revature.controllers.SelectOptionController;
 import com.revature.controllers.TransferController;
 import com.revature.daos.AccountDAO;
@@ -25,7 +26,7 @@ public class AdminServices {
 	private Account selectAccount() {
 		int accountNum = TransferController.inputNum();
 		ArrayList<Account> accounts = dao.getAccountsByAccount_id(accountNum);
-		if (accounts == null) {
+		if (accounts.size() == 0) {
 			System.out.println("There are no accounts associated with that account number.");
 			return null;
 		}
@@ -42,7 +43,7 @@ public class AdminServices {
 		return account;
 	}
 
-	public void employeeOptions() {
+	public void adminOptions() {
 
 		while (true) {
 
@@ -53,9 +54,10 @@ public class AdminServices {
 			System.out.println("3. Make a Withdrawal");
 			System.out.println("4. Transfer Money");
 			System.out.println("5. Fully Close Account");
-			System.out.println("6. Exit");
+			System.out.println("6. Create New Account");
+			System.out.println("7. Exit");
 
-			int option = SelectOptionController.selectOption(6);
+			int option = SelectOptionController.selectOption(7);
 
 			switch (option) {
 			case 1: {
@@ -81,6 +83,10 @@ public class AdminServices {
 				break;
 			}
 			case 6: {
+				createAccount();
+				break;
+			}
+			case 7: {
 				System.out.println("GoodBye " + user.getUsername() + ".");
 				System.out.println("Have a nice day!");
 				return;
@@ -95,7 +101,8 @@ public class AdminServices {
 		int accountNum = TransferController.inputNum();
 
 		ArrayList<Account> accounts = dao.getAccountsByAccount_id(accountNum);
-		if (accounts == null) {
+
+		if (accounts.size() == 0) {
 			System.out.println("There are no accounts associated with that account number.");
 			return;
 		}
@@ -171,32 +178,32 @@ public class AdminServices {
 
 		account.setBalance(newBalance);
 	}
-	
+
 	public void makeTransfer() {
 		System.out.println("Enter the account that you are transfering the money from. ");
 		Account account = selectAccount();
-		
-		if(account == null) {
+
+		if (account == null) {
 			return;
 		}
-		
-		if(account.getBalance() == account.getMinBalance()) {
+
+		if (account.getBalance() == account.getMinBalance()) {
 			System.out.println("There is no money in this account that can be transfered.");
 			return;
 		}
-		
+
 		System.out.println("Enter the account that you are sending money to.");
 		Account account2 = selectAccount();
-		
-		if(account2 == null) {
+
+		if (account2 == null) {
 			return;
 		}
-		
-		if(account.equals(account2)) {
+
+		if (account.equals(account2)) {
 			System.out.println("You can't send money to the same account you are taking money from.");
 			return;
 		}
-		
+
 		double newBalance;
 		double amount;
 		do {
@@ -211,17 +218,18 @@ public class AdminServices {
 			}
 		} while (newBalance < account.getMinBalance());
 
-		Transaction transaction = new Transaction(account.getAccountNum(), account.getAccountType(), amount, account2.getAccountNum(), account2.getAccountType());
+		Transaction transaction = new Transaction(account.getAccountNum(), account.getAccountType(), amount,
+				account2.getAccountNum(), account2.getAccountType());
 
 		if (!transaction.storeTransaction()) {
 			System.out.println("Something went wrong!");
 			return;
 		}
 	}
-	
+
 	public void closeAccount() {
 		System.out.println("Enter the account that you would like to fully close.");
-		
+
 		int accountNum = TransferController.inputNum();
 
 		ArrayList<Account> accounts = dao.getAccountsByAccount_id(accountNum);
@@ -229,37 +237,44 @@ public class AdminServices {
 			System.out.println("There are no accounts associated with that account number.");
 			return;
 		}
-		
-		for(int i = accounts.size()-1; i > 0; i--) {
+
+		for (int i = accounts.size() - 1; i > 0; i--) {
 			Account account = accounts.get(i);
-			if(account.getBalance() > 0) {
+			if (account.getBalance() > 0) {
 				double amount = account.getBalance();
-				Transaction transaction = new Transaction(account.getAccountNum(), account.getAccountType(), amount, account.getAccountNum(), 1);
+				Transaction transaction = new Transaction(account.getAccountNum(), account.getAccountType(), amount,
+						account.getAccountNum(), 1);
 				if (!transaction.storeTransaction()) {
 					System.out.println("Something went wrong!");
 					continue;
 				}
+				accounts.get(0).setBalance(accounts.get(0).getBalance() + amount);
 			}
-			
+
 			if (!account.deleteAccount()) {
 				System.out.println("Something went wrong.");
 				continue;
 			}
 
 			accounts.remove(account);
-			
+
 		}
-		
+
 		Account account = accounts.get(0);
-		if(account.getBalance() >0) {
-			System.out.println("The customer must withdraw all of there money before their final account can be closed.");
+		if (account.getBalance() > 0) {
+			System.out
+					.println("The customer must withdraw all of there money before their final account can be closed.");
 			return;
 		}
-		
+
 		if (!account.deleteAccount()) {
 			System.out.println("Something went wrong.");
 		}
 
 		accounts.remove(account);
+	}
+
+	public void createAccount() {
+		NewUserAdvancedController.createUser();
 	}
 }

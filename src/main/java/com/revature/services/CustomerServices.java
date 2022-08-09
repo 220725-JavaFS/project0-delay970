@@ -52,7 +52,7 @@ public class CustomerServices {
 			System.out.println("3. Make a Withdrawal");
 			System.out.println("4. Transfer Money");
 			System.out.println("5. Open a New Account");
-			System.out.println("6. Apply for loan");
+			//System.out.println("6. Apply for loan");
 			System.out.println("7. Close Account");
 			System.out.println("8. Exit");
 
@@ -328,14 +328,19 @@ public class CustomerServices {
 	
 	public void closeAccount() {
 		if (accounts.size() == 1) {
-			System.out.println("You can't close your last account.");
+			System.out.println("Only a bank admin can close your last account.");
 			return;
 		}
 
 		System.out.println("Which account would you like to close?");
 		int choice = selectAccount();
 		Account account = accounts.get(choice);
-
+		
+		if (account.getAccountType() == 1) {
+			System.out.println("Only the bank admin can close your checking account.");
+			return;
+		}
+		
 		if (account.getAccountType() == 4) {
 			System.out.println("You can't close a " + accountTypes.get(3) + " until it has matured.");
 			return;

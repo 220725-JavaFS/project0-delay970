@@ -28,13 +28,13 @@ public class ConnectionUtil {
 		}
 
 	}
-
-	public static void main(String[] args) {
-		try {
-			getConnection();
-			System.out.println("works");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+//
+//	public static void main(String[] args) {
+//		try {
+//			getConnection();
+//			System.out.println("works");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

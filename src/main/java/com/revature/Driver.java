@@ -11,7 +11,7 @@ public class Driver {
 	User user;
 
 	public static void main(String[] args) {
-		System.out.println("Welcome to Fox banking.");
+		System.out.println("Welcome to Fox Banking.");
 
 		UserDAOImpl dbo = new UserDAOImpl();
 
@@ -19,14 +19,28 @@ public class Driver {
 		// CreateFakeUserData.generateUsers(20, 2);
 		// CreateFakeUserData.generateUsers(20, 3);
 
-		//User activeUser = WelcomeController.welcome();
+		User activeUser = WelcomeController.welcome();
 
 		User testCustomer = dbo.getUserByAccount_id(174);
 		User testEmployee = dbo.getUserByAccount_id(134);
-		User testAdmin = dbo.getUserByAccount_id(91);
-		User activeUser = testEmployee;
+		User testAdmin = dbo.getUserByAccount_id(154);
 
 		UserOptions options = new UserOptions(activeUser);
+		options.displayUserOptions();
+		
+		
+		activeUser = WelcomeController.welcome();
+		options = new UserOptions(activeUser);
+		options.displayUserOptions();
+		
+		System.out.println("Demo Employee:");
+		activeUser = testEmployee;
+		options = new UserOptions(activeUser);
+		options.displayUserOptions();
+		
+		System.out.println("Demo Admin");
+		activeUser = testAdmin;
+		options = new UserOptions(activeUser);
 		options.displayUserOptions();
 	}
 

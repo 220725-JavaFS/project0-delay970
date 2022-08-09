@@ -30,7 +30,7 @@ public class EmployeeServices {
 			System.out.println("What would you like to do today?");
 			System.out.println("1. Check Account Balance");
 			System.out.println("2. Print Account Statment");
-			System.out.println("3. Approve Loan");
+			//System.out.println("3. Approve Loan");
 			System.out.println("4. Exit");
 
 			int option = SelectOptionController.selectOption(4);

@@ -31,7 +31,8 @@ public class UserOptions {
 			eservices.employeeOptions();
 			return;
 		case 3:
-
+			AdminServices aservices = new AdminServices(user);
+			aservices.adminOptions();
 			return;
 
 		default:
